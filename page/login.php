@@ -19,10 +19,10 @@ if (isset($_POST['sub'])) {
         } else {
             echo 0;
         }
-        header("location../");
+        
     } else {
         echo 'no user';
-    }
+    }header("location:../");
 }
 ?>
 <html lang="fa">

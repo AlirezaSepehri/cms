@@ -1,8 +1,8 @@
 <?php
 include '../../database/db.php';
 include "../../js/jdf.php";
-if ($_SESSION["role"] == 1) {
-    header(header: "location:../index.php");
+if ($_SESSION["role"] != 2) {
+    header("location:../index.php");
 }
 $number = 1;
 if (isset($_POST['sub'])) {
@@ -109,7 +109,7 @@ $posts = $all->fetchAll(PDO::FETCH_ASSOC);
                                         echo $writer["name"];
                                     }
                                 } ?></td>
-                            <td><?php echo jdate(format: 'Y/m/d', timestamp: $post['date']); ?></td>
+                            <td><?php echo jdate('Y/m/d', $post['date']); ?></td>
                             <td>
                                 <a href="editpost.php?id=<?php echo $post['id']; ?>" class="btn btn-warning">ویرایش</a>
                                 <a href="deletepost.php?id=<?php echo $post['id']; ?>" class="btn btn-danger">حدف</a>

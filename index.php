@@ -1,20 +1,19 @@
-<!-- Hklsdf  aslkf;sja;lsdjla-->
 <?php
 include "database/db.php";
 
-$result = $conn->prepare(query: "SELECT COUNT(id) FROM post");
+$result = $conn->prepare("SELECT COUNT(id) FROM post");
 $result->execute();
 $numposts = $result->fetch(PDO::FETCH_ASSOC);
 foreach ($numposts as $numpost) {
 }
 
-$result = $conn->prepare(query: "SELECT COUNT(id) FROM writers");
+$result = $conn->prepare("SELECT COUNT(id) FROM writers");
 $result->execute();
 $numwriters = $result->fetch(PDO::FETCH_ASSOC);
 foreach ($numwriters as $numwriter) {
 }
 
-$result = $conn->prepare(query: "SELECT COUNT(id) FROM user");
+$result = $conn->prepare("SELECT COUNT(id) FROM user");
 $result->execute();
 $numusers = $result->fetch(PDO::FETCH_ASSOC);
 foreach ($numusers as $numuser) {
@@ -30,7 +29,7 @@ $posts = $posts->fetchAll(PDO::FETCH_ASSOC);
 
 $writers = $conn->prepare("SELECT * FROM writers");
 $writers->execute();
-$writers = $writer->fetchAll(PDO::FETCH_ASSOC);
+$writers = $writers->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <html lang="fa">
@@ -57,14 +56,14 @@ $writers = $writer->fetchAll(PDO::FETCH_ASSOC);
                 <ul class="navbar-nav">
                     <li class="nav-item active">
                         <a class="nav-link" href="#">خانه</a>
-                    </li>
+                    <!-- </li>
                     <?php foreach ($menus as $menu) {
                         if ($menu["status"] == 1) { ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="#"><?php echo $menu["title"]; ?></a>
                             </li>
                     <?php }
-                    } ?>
+                    } ?> -->
 
                     <?php if (isset($_SESSION["login"])) { ?>
                         <li class="nav-item dropdown">
@@ -73,8 +72,6 @@ $writers = $writer->fetchAll(PDO::FETCH_ASSOC);
                             </a>
                             <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#"><?php echo $_SESSION['email'] ?></a>
-                                <a class="dropdown-item" href="#"><?php echo $_SESSION['password'] ?></a>
-                                <a class="dropdown-item" href="admin/index.php">پنل ادمین</a>
                                 <?php if ($_SESSION["role"] == 2) { ?><a class="dropdown-item" href="admin/index.php">پنل ادمین</a> <?php } ?>
 
                             </div>

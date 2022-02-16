@@ -26,7 +26,7 @@ if (isset($_POST['sub'])) {
     $all = $conn->prepare("SELECT * FROM post WHERE id=?");
     $all->bindValue(1, $id);
     $all->execute();
-    $post = $all->fetch(PDO::FETCH_ASSOC);
+    $post = $all->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
 <html lang="en">
@@ -62,7 +62,7 @@ if (isset($_POST['sub'])) {
                 <select name="writer" class="form-control">
                     <?php foreach ($writers as $writer) : ?>
                         <option value="<?php echo $writer["id"]; ?>"><?php echo $writer["name"];
-                                                                        ?> <?php if ($post["writer"] == $writer["id"]) { ?>selected <?php } ?></option>
+                        ?> <?php if ($post["writer"] == $writer["id"]) { ?>selected <?php } ?></option>
                     <?php endforeach; ?>
                 </select>
                 <br>

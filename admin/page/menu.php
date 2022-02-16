@@ -1,7 +1,7 @@
 <?php
 include '../../database/db.php';
-if ($_SESSION["role"] == 1) {
-    header(header: "location:../index.php");
+if ($_SESSION["role"] != 2) {
+    header("location:../index.php");
 }
 $number = 1;
 if (isset($_POST['sub'])) {

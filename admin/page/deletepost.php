@@ -1,7 +1,7 @@
 <?php
 include '../../database/db.php';
-if ($_SESSION["role"] == 1) {
-    header(header: "location:../index.php");
+if ($_SESSION["role"] != 2) {
+    header("location:../index.php");
 }
 $id = $_GET['id'];
 $result = $conn->prepare("DELETE FROM post WHERE id=?");
