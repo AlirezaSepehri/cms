@@ -1,19 +1,20 @@
+<!-- Hklsdf  aslkf;sja;lsdjla-->
 <?php
 include "database/db.php";
 
-$result = $conn->prepare("SELECT COUNT(id) FROM post");
+$result = $conn->prepare(query: "SELECT COUNT(id) FROM post");
 $result->execute();
 $numposts = $result->fetch(PDO::FETCH_ASSOC);
 foreach ($numposts as $numpost) {
 }
 
-$result = $conn->prepare("SELECT COUNT(id) FROM writers");
+$result = $conn->prepare(query: "SELECT COUNT(id) FROM writers");
 $result->execute();
 $numwriters = $result->fetch(PDO::FETCH_ASSOC);
 foreach ($numwriters as $numwriter) {
 }
 
-$result = $conn->prepare("SELECT COUNT(id) FROM user");
+$result = $conn->prepare(query: "SELECT COUNT(id) FROM user");
 $result->execute();
 $numusers = $result->fetch(PDO::FETCH_ASSOC);
 foreach ($numusers as $numuser) {
@@ -23,13 +24,20 @@ $menus = $conn->prepare("SELECT * FROM menu ORDER BY sort");
 $menus->execute();
 $menus = $menus->fetchAll(PDO::FETCH_ASSOC);
 
-$posts = $conn->prepare("SELECT * FROM post");
+$posts = $conn->prepare("SELECT * FROM post ORDER BY date DESC LIMIT 3");
 $posts->execute();
 $posts = $posts->fetchAll(PDO::FETCH_ASSOC);
 
 $writers = $conn->prepare("SELECT * FROM writers");
 $writers->execute();
-$writers = $writers->fetchAll(PDO::FETCH_ASSOC);
+$writers = $writer->fetchAll(PDO::FETCH_ASSOC);
+
+function limit_words($string, $word_limit)
+{
+    $words = explode(" ", $string);
+    return implode(" ", array_splice($words, 0, $word_limit));
+}
+
 ?>
 
 <html lang="fa">
@@ -45,6 +53,7 @@ $writers = $writers->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="container">
         <br>
+
         <!-- start headers -->
         <nav class="navbar navbar-expand-lg navbar-light bg-dark">
             <a class="navbar-brand" href="#">وبلاگ</a>
@@ -56,14 +65,14 @@ $writers = $writers->fetchAll(PDO::FETCH_ASSOC);
                 <ul class="navbar-nav">
                     <li class="nav-item active">
                         <a class="nav-link" href="#">خانه</a>
-                    <!-- </li>
+                    </li>
                     <?php foreach ($menus as $menu) {
                         if ($menu["status"] == 1) { ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="#"><?php echo $menu["title"]; ?></a>
                             </li>
                     <?php }
-                    } ?> -->
+                    } ?>
 
                     <?php if (isset($_SESSION["login"])) { ?>
                         <li class="nav-item dropdown">
@@ -72,6 +81,8 @@ $writers = $writers->fetchAll(PDO::FETCH_ASSOC);
                             </a>
                             <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#"><?php echo $_SESSION['email'] ?></a>
+                                <a class="dropdown-item" href="#"><?php echo $_SESSION['password'] ?></a>
+                                <a class="dropdown-item" href="admin/index.php">پنل ادمین</a>
                                 <?php if ($_SESSION["role"] == 2) { ?><a class="dropdown-item" href="admin/index.php">پنل ادمین</a> <?php } ?>
 
                             </div>
@@ -125,10 +136,11 @@ $writers = $writers->fetchAll(PDO::FETCH_ASSOC);
                     <div class="col-12 col-lg-4">
 
                         <div class="post-item">
-                            <a href=""><img src="<?php echo $post["image"]; ?>" alt="" width="100%"></a>
+                            <a href="page/single.php?post=<?php echo $post["title"]; ?>"><img src="<?php echo $post["image"]; ?>" alt="" width="100%"></a>
                             <div class="post-caption">
                                 <p><a href><?php echo $post["title"] ?></a></p>
-                                <span>آموزش رایگان پایتون</span>
+                                <span><?php echo limit_words($post["content"], 14) . " ..."; ?>
+                                </span>
                                 <br><br>
                                 <span class="seen-post">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
