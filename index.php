@@ -132,7 +132,14 @@ function limit_words($string, $word_limit)
                 مقالات
             </h3>
             <div class="row">
-                <?php foreach ($posts as $post) { ?>
+                <?php foreach ($posts as $post) {
+                    $idpost = $post["id"];
+                    $result = $conn->prepare(query: "SELECT COUNT(*) FROM view WHERE post=?");
+                    $result->bindValue(1, $idpost);
+                    $result->execute();
+                    $numviews = $result->fetch(PDO::FETCH_ASSOC);
+                    foreach ($numviews as $numview) {
+                    } ?>
                     <div class="col-12 col-lg-4">
 
                         <div class="post-item">
@@ -146,7 +153,7 @@ function limit_words($string, $word_limit)
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                         <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                    </svg>150
+                                    </svg><?= $numview ?>
                                 </span>
                                 <span class="seen-post post-comment">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text-fill" viewBox="0 0 16 16">
