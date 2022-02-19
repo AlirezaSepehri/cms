@@ -1,12 +1,10 @@
 <!-- Hklsdf  aslkf;sja;lsdjla-->
 <?php
-include "database/db.php";
+include "../database/db.php";
 if(isset($_POST['search'])){
     $search=$_POST['searchcontent'];
-    header("location:page/search.php?post=$search");
+    header("location:search.php?post=$search");
 }
-
-// $id=$_GET['id'];
 
 $result = $conn->prepare("SELECT COUNT(id) FROM post");
 $result->execute();
@@ -26,15 +24,11 @@ $numusers = $result->fetch(PDO::FETCH_ASSOC);
 foreach ($numusers as $numuser) {
 }
 
-// $users = $conn->prepare("SELECT * FROM user WHERE id=?");
-// $users->execute();
-// $users = $users->fetchAll(PDO::FETCH_ASSOC);
-
 $menus = $conn->prepare("SELECT * FROM menu ORDER BY sort");
 $menus->execute();
 $menus = $menus->fetchAll(PDO::FETCH_ASSOC);
 
-$posts = $conn->prepare("SELECT * FROM post ORDER BY date DESC LIMIT 3");
+$posts = $conn->prepare("SELECT * FROM post ORDER BY date DESC");
 $posts->execute();
 $posts = $posts->fetchAll(PDO::FETCH_ASSOC);
 
@@ -55,8 +49,8 @@ function limit_words($string, $word_limit)
 <head>
     <meta charset="UTF-8">
     <title>weblog</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
@@ -74,16 +68,15 @@ function limit_words($string, $word_limit)
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">خانه</a>
+                        <a class="nav-link" href="../index.php">خانه</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="page/pages.php">مقالات</a>
+                        <a class="nav-link" href="#">مقالات</a>
                     </li>
-                    
                     <!-- <?php foreach ($menus as $menu) {
                         if ($menu["status"] == 1) { ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="page/single.php"><?php echo $menu["title"]; ?></a>
+                                <a class="nav-link" href="single.php"><?php echo $menu["title"]; ?></a>
                             </li>
                     <?php }
                     } ?> -->
@@ -95,19 +88,19 @@ function limit_words($string, $word_limit)
                             </a>
                             <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#"><?php echo $_SESSION['email'] ?></a>
-                                <?php if ($_SESSION["role"] == 2) { ?><a class="dropdown-item" href="admin/index.php">پنل ادمین</a> <?php } ?>
+                                <?php if ($_SESSION["role"] == 2) { ?><a class="dropdown-item" href="../admin/index.php">پنل ادمین</a> <?php } ?>
 
                             </div>
                         </li>
                         <li>
-                            <a class="exit" href="page/log.php">خروج</a>
+                            <a class="exit" href="log.php">خروج</a>
                         </li>
                     <?php } else { ?>
                         <li class="nav-item active">
-                            <a class="nav-link" href="page/login.php">ورود<span class="sr-only"></span></a>
+                            <a class="nav-link" href="login.php">ورود<span class="sr-only"></span></a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="page/register.php">ثبت نام <span class="sr-only"></span></a>
+                            <a class="nav-link" href="register.php">ثبت نام <span class="sr-only"></span></a>
                         </li>
                     <?php } ?>
                 </ul>
@@ -120,28 +113,13 @@ function limit_words($string, $word_limit)
         <!-- end headers -->
         <!-- start content -->
         <br>
-        <div>
-            <div class="row d-none d-lg-flex">
-                <div class="col-4 information-site">
-                    <img src="image/stat-time.svg" alt="">
-                    <br><span>تعداد مقالات</span><br><span><?php echo $numpost; ?></span>
-                </div>
-                <div class="col-4 information-site">
-                    <img src="image/stat-teacher.svg" alt="">
-                    <br><span>تعداد نویسندگان</span><br><span><?php echo $numwriter; ?></span>
-                </div>
-                <div class="col-4 information-site">
-                    <img src="image/stat-student.svg" alt="">
-                    <br><span>تعداد کاربران</span><br><span><?php echo $numuser; ?></span>
-                </div>
-            </div>
-        </div>
+        
         <!-- end content -->
         <br><br class="d-none d-lg-block">
         <!-- start posts -->
         <div>
             <h3 style="padding: 10px;">
-            آخرین دوره های ما        
+                مقالات
             </h3>
             <div class="row">
                 <?php foreach ($posts as $post) {
@@ -152,12 +130,12 @@ function limit_words($string, $word_limit)
                     $numviews = $result->fetch(PDO::FETCH_ASSOC);
                     foreach ($numviews as $numview) {
                     } ?>
-                    <div class="col-12 col-lg-4">
+                    <div class="col-12 col-lg-6">
 
                         <div class="post-item">
-                            <a href="page/single.php?post=<?php echo $post["title"]; ?>"><img src="<?php echo $post["image"]; ?>" alt="" width="100%"></a>
+                            <a href="single.php?post=<?php echo $post["title"]; ?>"><img src="<?php echo $post["image"]; ?>" alt="" width="100%"></a>
                             <div class="post-caption">
-                                <p><a href="page/single.php?post=<?php echo $post["title"]; ?>"><?php echo $post["title"] ?></a></p>
+                                <p><a href="single.php?post=<?php echo $post["title"]; ?>"><?php echo $post["title"] ?></a></p>
                                 <span><?php echo limit_words($post["content"], 14) . "  ..."; ?>
                                 </span>
                                 <br><br>
@@ -167,11 +145,11 @@ function limit_words($string, $word_limit)
                                         <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                                     </svg><?= $numview ?>
                                 </span>
-                                <!-- <span class="seen-post post-comment">
+                                <span class="seen-post post-comment">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text-fill" viewBox="0 0 16 16">
                                         <path d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h9.586a1 1 0 0 1 .707.293l2.853 2.853a.5.5 0 0 0 .854-.353V2zM3.5 3h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1zm0 2.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1zm0 2.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1z" />
                                     </svg>7
-                                </span> -->
+                                </span>
                                 <a href="">
                                     <span class="float-left post-m">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-person-fill" viewBox="0 0 16 16">
@@ -207,7 +185,6 @@ function limit_words($string, $word_limit)
                             <input type="text" class="input-group" placeholder="پست الکترونیکی">
                             <input type="submit" class="btn btn-success" value="عضویت در خبرنگار">
                         </form>
-                        <br><br><br>
                     </div>
                     <div class="col-12 col-lg-5">
                         <div class="namad">
@@ -226,7 +203,7 @@ function limit_words($string, $word_limit)
 
 </body>
 
-<script src="js/jquery-3.6.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
 
 </html>

@@ -2,6 +2,7 @@
 include "../js/jdf.php";
 
 $posts = $conn->prepare("SELECT * FROM post WHERE title=?");
+$posts->bindValue(1,$_GET['post']);
 $posts->execute();
 $posts = $posts->fetch(PDO::FETCH_ASSOC);
 
@@ -9,12 +10,12 @@ $writers = $conn->prepare("SELECT * FROM writers");
 $writers->execute();
 $writers = $writers->fetchAll(PDO::FETCH_ASSOC);
 
-$idpost = $views["id"];
+$idpost = $posts["id"];
 $views = $conn->prepare("INSERT INTO view SET post=?");
 $views->bindValue(1, $idpost);
 $views->execute();
 
-$result = $conn->prepare(query: "SELECT COUNT(*) FROM view WHERE post=?");
+$result = $conn->prepare("SELECT COUNT(*) FROM view WHERE post=?");
 $result->bindValue(1, $idpost);
 $result->execute();
 $numviews = $result->fetch(PDO::FETCH_ASSOC);
@@ -48,12 +49,34 @@ foreach ($numviews as $numview) {
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">خانه <span class="sr-only"></span></a>
+                        <a class="nav-link" href="../index.php">خانه <span class="sr-only"></span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">پروفایل</a>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="pages.php">مقالات <span class="sr-only"></span></a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <?php if (isset($_SESSION["login"])) { ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                حساب کاربری
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#"><?php echo $_SESSION['email'] ?></a>
+                                <?php if ($_SESSION["role"] == 2) { ?><a class="dropdown-item" href="../admin/index.php">پنل ادمین</a> <?php } ?>
+
+                            </div>
+                        </li>
+                        <li>
+                            <a class="exit" href="log.php">خروج</a>
+                        </li>
+                    <?php } else { ?>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="login.php">ورود<span class="sr-only"></span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="register.php">ثبت نام <span class="sr-only"></span></a>
+                        </li>
+                    <?php } ?>
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             مقالات
                         </a>
@@ -62,12 +85,12 @@ foreach ($numviews as $numview) {
                             <a class="dropdown-item" href="#">bbb</a>
                             <a class="dropdown-item" href="#">ccc</a>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
-                <form class="form-inline my-2 my-lg-0 margin-right" style="margin-right:auto;">
+                <!-- <form class="form-inline my-2 my-lg-0 margin-right" style="margin-right:auto;">
                     <input class="form-control mr-sm-2 placholder" type="search" placeholder="دنبال چی میگردی؟" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">جستجو</button>
-                </form>
+                </form> -->
             </div>
         </nav>
     </div>
@@ -101,7 +124,7 @@ foreach ($numviews as $numview) {
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-minus" viewBox="0 0 16 16">
                             <path d="M5.5 9.5A.5.5 0 0 1 6 9h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z" />
                             <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
-                        </svg><?php echo jdate(format: "d F", timestamp: $posts['date']); ?>
+                        </svg><?php echo jdate("d F", $posts['date']); ?>
                     </div>
                 </div>
                 <br><br>
@@ -111,13 +134,13 @@ foreach ($numviews as $numview) {
                     <?php echo $posts['content']; ?>
                 </div>
                 <br>
-                <div class="tag-post">
-                    <?php $tags = explode(separator: ",", string: $posts["tag"]);
+                <a href="search.php"><div class="tag-post">
+                    <?php $tags = explode(",",$posts["tag"]);
                     foreach ($tags as $tag) {
                     ?>
                         <span><?php echo $tag; ?></span>
                     <?php } ?>
-                </div><br>
+                </div></a><br>
                 <div>
                     <b>نظرات کاربران در رابطه با این دوره</b>
                     <form><br>

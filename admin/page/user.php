@@ -5,19 +5,18 @@ if ($_SESSION["role"] != 2) {
 }
 $number = 1;
 if (isset($_POST['sub'])) {
-    $name = $_POST['name'];
-
-    $result = $conn->prepare("INSERT INTO writers SET name=?");
-    $result->bindValue(1, $name);
+    $title = $_POST['username'];
+    $sort = $_POST['role'];
+    $result = $conn->prepare("INSERT INTO user SET username=? , role=?");
+    $result->bindValue(1, $username);
+    $result->bindValue(2, $role);
     $result->execute();
 }
 
-$all = $conn->prepare("SELECT * FROM writers");
+$all = $conn->prepare("SELECT * FROM user");
 $all->execute();
-$writer = $all->fetchAll(PDO::FETCH_ASSOC);
-
+$users = $all->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
 <html lang="en">
 
 <head>
@@ -27,11 +26,6 @@ $writer = $all->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../../css/bootstrap.css">
     <link rel="stylesheet" href="../../css/style.css">
     <title>Admin</title>
-    <style>
-        table{
-            margin-bottom: 50px;
-        }
-    </style>
 </head>
 
 <body>
@@ -40,40 +34,41 @@ $writer = $all->fetchAll(PDO::FETCH_ASSOC);
         <div class="row">
             <ul class="nav nav-pills nav-fill">
                 <li class="nav-item">
-                    <a class="nav-link" href="menu.php">منو</a>
+                    <a class="nav-link " href="menu.php">منو</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="blog.php">وبلاگ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">نویسندگان</a>
+                    <a class="nav-link" href="comment.php">نویسندگان</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="user.php">اعضا</a>
+                    <a class="nav-link active" href="#">اعضا</a>
                 </li>
             </ul>
-        </div><br>
-        <div class="row">
-            <form method="post"> <br>
-                <input name="name" type="text" placeholder="نام و نام خانوادگی" class="form-control"><br>
-                <input type="submit" value="ثبت" name="sub" class="btn btn-primary">
-            </form>
+        </div>
+        
+
+        <br><br><br><br><br><br>
+
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">عنوان</th>
+                        <th scope="col">نام</th>
+                        <th scope="col">نقش</th>
                         <th scope="col">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($writer as $writers) { ?>
+                    <?php foreach ($users as $user) { ?>
                         <tr>
                             <th scope="row"><?php echo $number++; ?></th>
-                            <td><?php echo $writers["name"]; ?></td>
+                            <td><?php echo $user["username"]; ?></td>
+                            <td><?php echo $user["role"]; ?></td>
                             <td>
-                                <a href="editwriter.php?id=<?php echo $writers['id']; ?>" class="btn btn-warning">ویرایش</a>
-                                <a href="deletewriter.php?id=<?php echo $writers['id']; ?>" class="btn btn-danger">حدف</a>
+                                <a href="edituser.php?id=<?php echo $user['id']; ?>" class="btn btn-warning">ویرایش</a>
+                                <a href="deleteuser.php?id=<?php echo $user['id']; ?>" class="btn btn-danger">حدف</a>
                             </td>
                         </tr>
                     <?php } ?>

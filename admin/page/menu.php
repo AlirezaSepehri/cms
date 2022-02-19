@@ -31,6 +31,7 @@ $menus = $all->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
+    <br>
     <div class="container">
         <div class="row">
             <ul class="nav nav-pills nav-fill">
@@ -44,7 +45,7 @@ $menus = $all->fetchAll(PDO::FETCH_ASSOC);
                     <a class="nav-link" href="comment.php">نویسندگان</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
+                    <a class="nav-link" href="user.php">اعضا</a>
                 </li>
             </ul>
         </div>

@@ -49,12 +49,13 @@ if (isset($_POST['sub'])) {
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">خانه <span class="sr-only"></span></a>
+                        <a class="nav-link" href="../index.php">خانه <span class="sr-only"></span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">پروفایل</a>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="pages.php">مقالات <span class="sr-only"></span></a>
                     </li>
-                    <li class="nav-item dropdown">
+                    
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             مقالات
                         </a>
@@ -63,7 +64,7 @@ if (isset($_POST['sub'])) {
                             <a class="dropdown-item" href="#">bbb</a>
                             <a class="dropdown-item" href="#">ccc</a>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
                 <form class="form-inline my-2 my-lg-0 margin-right" style="margin-right:auto;">
                     <input class="form-control mr-sm-2 placholder" type="search" placeholder="دنبال چی میگردی؟" aria-label="Search">

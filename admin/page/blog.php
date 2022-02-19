@@ -2,7 +2,7 @@
 include '../../database/db.php';
 include "../../js/jdf.php";
 if ($_SESSION["role"] == 1) {
-    header(header: "location:../index.php");
+    header("location:../index.php");
 }
 $number = 1;
 if (isset($_POST['sub'])) {
@@ -49,6 +49,7 @@ $posts = $all->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
+    <br>
     <div class="container">
         <div class="row">
             <ul class="nav nav-pills nav-fill">
@@ -62,7 +63,7 @@ $posts = $all->fetchAll(PDO::FETCH_ASSOC);
                     <a class="nav-link" href="comment.php">نویسندگان</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
+                    <a class="nav-link" href="user.php">اعضا</a>
                 </li>
             </ul>
         </div>
@@ -109,7 +110,7 @@ $posts = $all->fetchAll(PDO::FETCH_ASSOC);
                                         echo $writer["name"];
                                     }
                                 } ?></td>
-                            <td><?php echo jdate(format: 'Y/m/d', timestamp: $post['date']); ?></td>
+                            <td><?php echo jdate('Y/m/d', $post['date']); ?></td>
                             <td>
                                 <a href="editpost.php?id=<?php echo $post['id']; ?>" class="btn btn-warning">ویرایش</a>
                                 <a href="deletepost.php?id=<?php echo $post['id']; ?>" class="btn btn-danger">حدف</a>

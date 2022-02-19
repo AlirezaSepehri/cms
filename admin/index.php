@@ -16,6 +16,7 @@ if ($_SESSION["role"] != 2) {
 </head>
 
 <body>
+    <br>
     <div class="container">
         <div class="row">
             <ul class="nav nav-pills nav-fill">
@@ -29,7 +30,7 @@ if ($_SESSION["role"] != 2) {
                     <a class="nav-link" href="page/comment.php">نویسندگان</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
+                    <a class="nav-link" href="page/user.php">اعضا</a>
                 </li>
             </ul>
         </div>
